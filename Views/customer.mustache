@@ -1,0 +1,193 @@
+{{>header}}
+
+<div class="container my-5">
+    <h1>Customer Dashboard</h1>
+    {{#error}}
+        <div class="alert alert-danger" role="alert">
+            {{errorMessage}}
+        </div>
+    {{/error}}
+    {{#alert}}
+        <div class="alert alert-success" role="alert">
+            {{successAlert}}
+        </div>
+    {{/alert}}
+    <div class="card my-5">
+        <div class="card-body">
+            <h5 class="card-title">Edit Profile</h5>
+            <form action="/editProfile" method="POST">
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label font-weight-bold">Name</label>
+                    <div class="col-sm-10">
+                        <input type="name" class="form-control" id="name" name="name" value="{{name}}" disabled required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="userEmail" class="col-sm-2 col-form-label font-weight-bold">Email</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="userEmail" disabled name="userEmail" value="{{email}}" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-sm-2 col-form-label font-weight-bold">Password</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password" name="password" value="{{password}}" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="birthDate" class="col-sm-2 col-form-label font-weight-bold">Birth Date</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="birthDate" name="birthDate" value="{{birthday}}" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="phoneNumber" class="col-sm-2 col-form-label font-weight-bold">Phone Number</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="phoneNumber" name="phoneNumber" value="{{phone}}" required>
+                    </div>
+                </div>
+                <div class="form-group row mb-0">
+                    <div class="col-sm-10 offset-sm-2">
+                        <button type="submit" class="btn btn-primary">
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card my-5">
+        <div class="card-body">
+            <h5 class="card-title">Manage Subscriptions</h5>
+            <form action="/manageSubscriptions" method="POST">
+                <div class="row my-5 ">
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Basic Plan</h5>
+                                <p class="card-text font-weight-bold">$10 per month</p>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="basic" name="plan" value="10" {{#basic}} checked disabled {{/basic}} class="custom-control-input">
+                                    <label class="custom-control-label" for="basic">Basic</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Plus Plan</h5>
+                                <p class="card-text font-weight-bold">$20 per month</p>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="plus" name="plan" value="20" {{#plus}} checked disabled {{/plus}} class="custom-control-input">
+                                    <label class="custom-control-label" for="plus">Plus</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Advanced Plan</h5>
+                                <p class="card-text font-weight-bold">$30 per month</p>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="advanced" name="plan" {{#advance}} checked disabled {{/advance}} value="30" class="custom-control-input">
+                                    <label class="custom-control-label" for="advanced">Advanced</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Cancel Plan</h5>
+                                <p class="card-text font-weight-bold">Stop Using services</p>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="cancelPlan" name="plan" value="0" class="custom-control-input">
+                                    <label class="custom-control-label" for="cancelPlan">Cancel</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-outline-secondary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Change Payment method</h5>
+            <form method="POST" action="/updatePaymentMethod" id="payment-form">
+                <div class="form-group">
+                    <div id="card-element" class="form-control">
+                        <!-- A Stripe Element will be inserted here. -->
+                    </div>
+                </div>
+                <button class="btn btn-outline-primary">Save Changes</button>
+                <div id="card-errors" role="alert" style="color: #fa755a; padding: 4px 0; height: 20px;"></div>
+            </form>
+        </div>
+    </div>
+</div>
+<script> 
+    // Create a Stripe client with test api key
+    var stripe = Stripe('pk_test_VACMyawHRE5fmCZEKILW57Q600JnE6GdHN');
+    var elements = stripe.elements();
+    var style = {
+        base: {
+        color: '#32325d',
+        fontFamily: '"Roboto", serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+            color: '#aab7c4'
+        }
+        },
+        invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+        }
+    };
+
+    var card = elements.create('card', {style: style});
+    card.mount('#card-element');
+
+    card.addEventListener('change', function(event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+        displayError.textContent = event.error.message;
+        } else {
+        displayError.textContent = '';
+        }
+    });
+
+    // Handle form submission.
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+                // Inform the user if there was an error.
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                stripeTokenHandler(result.token);
+            }
+            });
+        });
+        // Submit the form with the token ID.
+        function stripeTokenHandler(token) {
+            // Insert the token ID into the form so it gets submitted to the server
+            var form = document.getElementById('payment-form');
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripeToken');
+            hiddenInput.setAttribute('value', token.id);
+            form.appendChild(hiddenInput);
+
+            // Submit the form
+            form.submit();
+        } 
+</script>
+{{>footer}}

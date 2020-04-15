@@ -1,0 +1,118 @@
+{{>header}}
+
+<div class="container my-5">
+    <h1>Select a Plan</h1>
+    <form action="/subscription" method="POST" id="payment-form">
+        <div class="row my-5 ">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Basic Plan</h5>
+                        <p class="card-text font-weight-bold">$10 per month</p>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="basic" name="plan" value="10" checked class="custom-control-input">
+                            <label class="custom-control-label" for="basic">Basic</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Plus Plan</h5>
+                        <p class="card-text font-weight-bold">$20 per month</p>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="plus" name="plan" value="20" class="custom-control-input">
+                            <label class="custom-control-label" for="plus">Plus</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Advanced Plan</h5>
+                        <p class="card-text font-weight-bold">$30 per month</p>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="advanced" name="plan" value="30" class="custom-control-input">
+                            <label class="custom-control-label" for="advanced">Advanced</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card my-5">
+            <div class="card-body">
+                <h5 class="card-title">Add a Payment Method</h5>
+                <div class="form-group">
+                    <div id="card-element" class="form-control">
+                        <!-- A Stripe Element will be inserted here. -->
+                    </div>
+                </div>
+                <button class="btn btn-outline-primary">Save Changes</button>
+                <div id="card-errors" role="alert" style="color: #fa755a; padding: 4px 0; height: 20px;"></div>
+            </div>
+        </div>
+    </form>
+</div>
+<script> 
+    // Create a Stripe client with test api key
+    var stripe = Stripe('pk_test_VACMyawHRE5fmCZEKILW57Q600JnE6GdHN');
+    var elements = stripe.elements();
+    var style = {
+        base: {
+        color: '#32325d',
+        fontFamily: '"Roboto", serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+            color: '#aab7c4'
+        }
+        },
+        invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+        }
+    };
+
+    var card = elements.create('card', {style: style});
+    card.mount('#card-element');
+
+    card.addEventListener('change', function(event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+        displayError.textContent = event.error.message;
+        } else {
+        displayError.textContent = '';
+        }
+    });
+
+    // Handle form submission.
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+                // Inform the user if there was an error.
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                stripeTokenHandler(result.token);
+            }
+            });
+        });
+
+        // Submit the form with the token ID.
+        function stripeTokenHandler(token) {
+            var form = document.getElementById('payment-form');
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripeToken');
+            hiddenInput.setAttribute('value', token.id);
+            form.appendChild(hiddenInput);
+
+            // Submit the form
+            form.submit();
+        } 
+</script>
+{{>footer}}

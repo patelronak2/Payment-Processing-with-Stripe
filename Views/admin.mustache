@@ -1,0 +1,56 @@
+{{>header}}
+
+<div class="container-fluid my-5">
+    <h1>Admin Dashboard</h1>
+    {{#alert}}
+        <div class="alert alert-success" role="alert">
+            {{message}}
+        </div>
+    {{/alert}}
+    <div class="table-responsive my-5">
+        <table class="table">
+        <caption class="font-italic" style="caption-side: top;">Disabled button indicate user's current Plan</caption>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Birthday</th>
+                    <th>Basic Plan</th>
+                    <th>Plus Plan</th>
+                    <th>Advanced Plan</th>
+                    <th>Change</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#users}}
+                    <tr>
+                        <td>{{name}}</td>
+                        <td>{{email}}</td>
+                        <td>{{phone}}</td>
+                        <td>{{birthday}}</td>
+                        <td>
+                            <a href="/adminDashboard/{{id}}/10" class="btn btn-primary btn-sm {{#basic}}disabled{{/basic}}">
+                                Select Basic
+                            </a>
+                        </td>
+                        <td>
+                            <a href="/adminDashboard/{{id}}/20" class="btn btn-warning btn-sm {{#plus}}disabled{{/plus}}">
+                                Select Plus
+                            </a>
+                        </td>
+                        <td>
+                            <a href="/adminDashboard/{{id}}/30" class="btn btn-secondary btn-sm {{#advance}}disabled{{/advance}}">
+                                Select Advance
+                            </a>
+                        </td>
+                        <td><a href="/adminDashboard/{{id}}/0" class="btn btn-danger btn-sm">Cancel</a></td>
+                    </tr>
+                {{/users}}
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+
+{{>footer}}
