@@ -2,8 +2,8 @@ const express = require('express');
 var app = express();
 var http = require('http').createServer(app);
 
-const accountSid = 'AC2f88ec7e4affc514a2aa6d862bb22671';
-const authToken = '20f3ad9aa8119b1197b8f31a85f63173';
+const accountSid = ''; //Your TWILIO accountSid
+const authToken = ''; //Your TWILIO authToken
 const client = require('twilio')(accountSid, authToken);
 
 var sqlite3 = require("sqlite3").verbose();
@@ -23,7 +23,7 @@ app.use(session({
     saveUninitialized: false
 }))
 
-var stripe = require('stripe')('sk_test_ry9UvmNefcV4NOtuDDDLBhhp00V9udAmNh');
+var stripe = require('stripe')('YOUR STRIPE TEST KEY');
 
 http.listen(3000, function() {
     console.log("App running at port 3000...");
