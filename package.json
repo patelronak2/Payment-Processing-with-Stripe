@@ -1,0 +1,19 @@
+{
+    "name": "lab5",
+    "version": "1.0.0",
+    "description": "Lab Demonstrating Stripe, Twilio, Mustache in Node.js",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Ronak Patel",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.17.1",
+        "express-session": "^1.17.0",
+        "mustache-express": "^1.3.0",
+        "sqlite3": "^4.1.0",
+        "stripe": "^7.14.0",
+        "twilio": "^3.37.1"
+    }
+}
